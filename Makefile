@@ -7,6 +7,7 @@ all: $(STRING_PATH)/string.a
 
 .PHONY: string
 string: $(STRING_PATH)/string.a
+
 $(STRING_PATH)/string.a: $(STRING_PATH)/string.o
 	ar rcs $(STRING_PATH)/string.a $^
 $(STRING_PATH)/string.c: $(STRING_PATH)/string.h
