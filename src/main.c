@@ -1,8 +1,9 @@
 #include "string/string.h"
+#include "vector/vector.h"
 #include <stdio.h>
 #include <stdlib.h>
 
-int main()
+static void string_test()
 {
     // Create the string.
     String *string = string_create("Hello world");
@@ -31,6 +32,27 @@ int main()
 
     // Delete the string memory.
     string_delete(string);
+}
+
+static void vector_test()
+{
+    Vector *vector = vector_create();
+    printf("[Length: %d, Capacity: %d]\n\n", vector->length, vector->capacity);
+
+    String *string = string_create("Hello");
+    vector_push(vector, string);
+    printf("[Length: %d, Capacity: %d, Pushed: %s]\n\n", vector->length, vector->capacity, string->text);
+
+    String *string_pop = vector_pop(vector);
+    printf("[Length: %d, Capacity: %d, Poped: %s]\n\n", vector->length, vector->capacity, string_pop->text);
+
+    string_delete(string);
+}
+
+int main()
+{
+    // string_test();
+    vector_test();
 
     return EXIT_SUCCESS;
 }
