@@ -1,6 +1,7 @@
 #include "string.h"
 #include <string.h>
 #include <stdlib.h>
+#include <stdio.h>
 
 static void reallocate_if_needed(String *string, size_t capacity)
 {
@@ -107,6 +108,16 @@ void string_substring(String *dest, size_t start, size_t finish)
 
     // Delete the substring memory
     free(substring);
+}
+
+void string_info(String *src)
+{
+    printf("{length: %d, capacity: %d}\n", src->length, src->capacity);
+}
+
+void string_print(String *src)
+{
+    printf("%s\n", src->text);
 }
 
 void string_delete(String *dest)
