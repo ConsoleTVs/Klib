@@ -7,7 +7,7 @@
 #include <stdio.h>
 #include <stdarg.h>
 
-void get_window_size(size_t *rows, size_t *cols)
+void get_window_size(size_t *const rows, size_t *const cols)
 {
     #if defined(_WIN32) || defined(_WIN64)
         CONSOLE_SCREEN_BUFFER_INFO csbi;
@@ -45,6 +45,7 @@ int red_printf(const char *format, ...)
         strcat(fmt, format);
         strcat(fmt, "\x1b[0m");
         done = vfprintf(stderr, fmt, arg);
+        free(fmt);
     #endif
 
     va_end(arg);

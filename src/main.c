@@ -6,76 +6,73 @@
 
 static void string_test()
 {
+    printf("Testing string...\n");
     // Create the string.
-    String *string = string_create("Hello world");
-    string_info(string);
-    string_print(string);
-
+    String string;
+    string_init(&string, "Hello world");
+    string_info(&string);
+    string_print(&string);
     // Add another text to the string.
-    string_add(string, ", this is a nice example of dynamic strings");
-    string_info(string);
-    string_print(string);
-
+    string_add(&string, ", this is a nice example of dynamic strings");
+    string_info(&string);
+    string_print(&string);
     // Pop the last value of the string.
-    char pop = string_pop(string);
-    string_info(string);
-    string_print(string);
-
+    char pop = string_pop(&string);
+    string_info(&string);
+    string_print(&string);
     // Push a new value at the end of the string.
-    string_push(string, pop);
-    string_info(string);
-    string_print(string);
-
+    string_push(&string, pop);
+    string_info(&string);
+    string_print(&string);
     // Add anothe string toghether.
-    String *string2 = string_create(" yey!!!");
-    string_concat(string, string2);
-    string_info(string);
-    string_print(string);
-
+    String string2;
+    string_init(&string2, " yey!!!");
+    string_concat(&string, &string2);
+    string_info(&string);
+    string_print(&string);
     // Get a substring
-    string_substring(string, 13, 34);
-    string_info(string);
-    string_print(string);
-
+    string_substring(&string, 13, 34);
+    string_info(&string);
+    string_print(&string);
     // Delete the string memory.
-    string_delete(string);
+    string_delete(&string);
 }
 
 static void vector_test()
 {
+    printf("Testing vector...\n");
     // Create a vector.
-    Vector *vector = vector_create();
-    vector_info(vector);
-    vector_print(vector);
-
+    Vector vector;
+    vector_init(&vector);
+    vector_info(&vector);
+    vector_print(&vector);
     // Add an element to the vector.
-    String *string = string_create("Hello");
-    vector_push(vector, string);
-    vector_info(vector);
-    vector_print(vector);
-
+    String string;
+    string_init(&string, "Hello");
+    vector_push(&vector, &string);
+    vector_info(&vector);
+    vector_print(&vector);
     // Pop an element from the vector.
-    String *string_pop = vector_pop(vector);
-    vector_info(vector);
-    vector_print(vector);
-
+    String *string_pop = vector_pop(&vector);
+    vector_info(&vector);
+    vector_print(&vector);
     // Add the popped element back to the vector.
-    vector_push(vector, string_pop);
-    vector_info(vector);
-    vector_print(vector);
-
+    vector_push(&vector, string_pop);
+    vector_info(&vector);
+    vector_print(&vector);
     // Add an additional element to the vector.
-    String *string2 = string_create("World");
-    vector_push(vector, string2);
-    vector_info(vector);
-    vector_print(vector);
-
+    String string2;
+    string_init(&string2, "World");
+    vector_push(&vector, &string2);
+    vector_info(&vector);
+    vector_print(&vector);
     // Delete the vector.
-    string_delete(string);
+    vector_delete(&vector);
 }
 
 void utils_test()
 {
+    printf("Testing utils...\n");
     const char *var1 = "World", *var2 = "World";
     red_printf(" -- %s %s --\n", var1, var2);
     size_t rows, cols;
