@@ -1,5 +1,5 @@
 CC = gcc
-CCFLAGS = -O3 -std=c99
+CCFLAGS = -O3 -std=c99 -Wall -Wextra
 STRING_PATH = src/string
 VECTOR_PATH = src/vector
 UTILS_PATH = src/utils

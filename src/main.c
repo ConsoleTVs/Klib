@@ -1,3 +1,5 @@
+#define __USE_MINGW_ANSI_STDIO 1
+
 #include "string/string.h"
 #include "vector/vector.h"
 #include "utils/utils.h"
@@ -73,11 +75,10 @@ static void vector_test()
 void utils_test()
 {
     printf("Testing utils...\n");
-    const char *var1 = "World", *var2 = "World";
-    red_printf(" -- %s %s --\n", var1, var2);
+    red_printf("Some red text\n");
     size_t rows, cols;
     get_window_size(&rows, &cols);
-    printf("Terminal size: %d x %d", rows, cols);
+    printf("Terminal size: %zu  x %zu", rows, cols);
 }
 
 int main()

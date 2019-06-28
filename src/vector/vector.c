@@ -1,3 +1,5 @@
+#define __USE_MINGW_ANSI_STDIO 1
+
 #include "vector.h"
 #include <stdlib.h>
 #include <stdio.h>
@@ -47,7 +49,7 @@ void *vector_pop(Vector *const dest)
 
 void vector_info(const Vector *const src)
 {
-    printf("{length: %d, capacity: %d}\n", src->length, src->capacity);
+    printf("{length: %zu, capacity: %zu}\n", src->length, src->capacity);
 }
 
 void vector_print(const Vector *const src)
@@ -69,6 +71,4 @@ void vector_delete(Vector *dest)
 {
     // Free the memory used by the data storage.
     free(dest->data);
-    // Free the vector memory.
-    free(dest);
 }

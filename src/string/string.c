@@ -1,3 +1,5 @@
+#define __USE_MINGW_ANSI_STDIO 1
+
 #include "string.h"
 #include <string.h>
 #include <stdlib.h>
@@ -105,7 +107,7 @@ String string_new_substring(const String *const dest, const size_t start, const 
 
 void string_info(const String *const src)
 {
-    printf("{length: %d, capacity: %d}\n", src->length, src->capacity);
+    printf("{length: %zu, capacity: %zu}\n", src->length, src->capacity);
 }
 
 void string_print(const String *const src)
@@ -117,6 +119,4 @@ void string_delete(String *dest)
 {
     // Remove the text from the heap.
     free(dest->text);
-    // Remove the string from the heap.
-    free(dest);
 }
