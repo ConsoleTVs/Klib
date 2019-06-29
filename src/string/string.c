@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-static void reallocate_if_needed(String *string, size_t capacity)
+static void reallocate_if_needed(string_t *const string, const size_t capacity)
 {
     if (string->capacity < capacity) {
         // Increment the size of the capacity to a multiple of STRING_BLOCK_SIZE.
@@ -21,7 +21,7 @@ static void reallocate_if_needed(String *string, size_t capacity)
     }
 }
 
-void string_init(String *const dest, const char *const text)
+void string_init(string_t *const dest, const char *const text)
 {
     // Set the length of the string.
     dest->length = strlen(text);
@@ -33,7 +33,7 @@ void string_init(String *const dest, const char *const text)
     strcpy(dest->text, text);
 }
 
-void string_push(String *const dest, char character)
+void string_push(string_t *const dest, const char character)
 {
     // Reallocate the capacity of the string if needed.
     reallocate_if_needed(dest, ++dest->length);
@@ -42,7 +42,7 @@ void string_push(String *const dest, char character)
     dest->text[dest->length] = '\0';
 }
 
-char string_pop(String *const dest)
+char string_pop(string_t *const dest)
 {
     // Get the char to be poped.
     char pop = dest->text[--dest->length];
@@ -53,7 +53,7 @@ char string_pop(String *const dest)
     return pop;
 }
 
-void string_add(String *const dest, const char *const text)
+void string_add(string_t *const dest, const char *const text)
 {
     // Update the length of the string.
     dest->length += strlen(text);
@@ -63,7 +63,7 @@ void string_add(String *const dest, const char *const text)
     strcat(dest->text, text);
 }
 
-void string_concat(String *const dest, const String *const src)
+void string_concat(string_t *const dest, const string_t *const src)
 {
     // Update the length of the string.
     dest->length += src->length;
@@ -73,7 +73,7 @@ void string_concat(String *const dest, const String *const src)
     strcat(dest->text, src->text);
 }
 
-void string_substring(String *const dest, const size_t start, const size_t finish)
+void string_substring(string_t *const dest, const size_t start, const size_t finish)
 {
     // Calculate the result length of the substring.
     dest->length = finish - start + 1;
@@ -91,9 +91,9 @@ void string_substring(String *const dest, const size_t start, const size_t finis
     free(substring);
 }
 
-String string_new_substring(const String *const dest, const size_t start, const size_t finish)
+string_t string_new_substring(const string_t *const dest, const size_t start, const size_t finish)
 {
-    String result;
+    string_t result;
     // Allocate memory for the capacity +1 for null termination.
     char *substring = (char *) malloc(finish - start + 2);
     // Copy the string from the original to the substring.
@@ -105,17 +105,17 @@ String string_new_substring(const String *const dest, const size_t start, const 
     return result;
 }
 
-void string_info(const String *const src)
+void string_info(const string_t *const src)
 {
     printf("{length: %zu, capacity: %zu}\n", src->length, src->capacity);
 }
 
-void string_print(const String *const src)
+void string_print(const string_t *const src)
 {
     printf("%s\n", src->text);
 }
 
-void string_delete(String *dest)
+void string_delete(string_t *const dest)
 {
     // Remove the text from the heap.
     free(dest->text);

@@ -5,7 +5,7 @@
 #include <stdio.h>
 #include <inttypes.h>
 
-static void reallocate_if_needed(Vector *vector, size_t capacity)
+static void reallocate_if_needed(vector_t *const vector, const size_t capacity)
 {
     if (vector->capacity < capacity) {
         // Increment the size of the capacity to a multiple of VECTOR_BLOCK_SIZE.
@@ -21,7 +21,7 @@ static void reallocate_if_needed(Vector *vector, size_t capacity)
     }
 }
 
-void vector_init(Vector *const dest)
+void vector_init(vector_t *const dest)
 {
     // Set the default data.
     dest->length = 0;
@@ -30,7 +30,7 @@ void vector_init(Vector *const dest)
     dest->data = (void **) malloc(sizeof(void *) * dest->capacity);
 }
 
-void vector_push(Vector *const dest, void *const element)
+void vector_push(vector_t *const dest, void *const element)
 {
     // Reallocate the capacity of the vector if needed.
     reallocate_if_needed(dest, ++dest->length);
@@ -38,7 +38,7 @@ void vector_push(Vector *const dest, void *const element)
     dest->data[dest->length - 1] = element;
 }
 
-void *vector_pop(Vector *const dest)
+void *vector_pop(vector_t *const dest)
 {
     // Get the value to pop.
     void *pop = dest->data[dest->length - 1];
@@ -47,12 +47,12 @@ void *vector_pop(Vector *const dest)
     return pop;
 }
 
-void vector_info(const Vector *const src)
+void vector_info(const vector_t *const src)
 {
     printf("{length: %zu, capacity: %zu}\n", src->length, src->capacity);
 }
 
-void vector_print(const Vector *const src)
+void vector_print(const vector_t *const src)
 {
     // Print an empty vector if length == 0.
     if (src->length == 0) {
@@ -67,7 +67,7 @@ void vector_print(const Vector *const src)
     printf("0x%"PRIXPTR"]\n", (uintptr_t) src->data[src->length - 1]);
 }
 
-void vector_delete(Vector *dest)
+void vector_delete(vector_t *const dest)
 {
     // Free the memory used by the data storage.
     free(dest->data);

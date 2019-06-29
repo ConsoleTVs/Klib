@@ -6,11 +6,20 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+// Use generic vector
+#define TYPE int
+#define NAME int
+#define BLOCK 20
+#include "genvec/genvec.h"
+#undef TYPE
+#undef NAME
+#undef BLOCk
+
 static void string_test()
 {
     printf("Testing string...\n");
     // Create the string.
-    String string;
+    string_t string;
     string_init(&string, "Hello world");
     string_info(&string);
     string_print(&string);
@@ -27,7 +36,7 @@ static void string_test()
     string_info(&string);
     string_print(&string);
     // Add anothe string toghether.
-    String string2;
+    string_t string2;
     string_init(&string2, " yey!!!");
     string_concat(&string, &string2);
     string_info(&string);
@@ -44,18 +53,18 @@ static void vector_test()
 {
     printf("Testing vector...\n");
     // Create a vector.
-    Vector vector;
+    vector_t vector;
     vector_init(&vector);
     vector_info(&vector);
     vector_print(&vector);
     // Add an element to the vector.
-    String string;
+    string_t string;
     string_init(&string, "Hello");
     vector_push(&vector, &string);
     vector_info(&vector);
     vector_print(&vector);
     // Pop an element from the vector.
-    String *string_pop = vector_pop(&vector);
+    string_t *string_pop = vector_pop(&vector);
     vector_info(&vector);
     vector_print(&vector);
     // Add the popped element back to the vector.
@@ -63,13 +72,29 @@ static void vector_test()
     vector_info(&vector);
     vector_print(&vector);
     // Add an additional element to the vector.
-    String string2;
+    string_t string2;
     string_init(&string2, "World");
     vector_push(&vector, &string2);
     vector_info(&vector);
     vector_print(&vector);
     // Delete the vector.
     vector_delete(&vector);
+}
+
+void genvec_test()
+{
+    printf("Testing genvec...\n");
+    vector_int_t vec;
+    vector_int_init(&vec);
+    vector_int_push(&vec, 10);
+    vector_int_push(&vec, 20);
+    vector_int_push(&vec, 30);
+    for (size_t i = 0; i < vec.length; i++) printf("%d ", vec.data[i]);
+    printf("\n");
+    int popped = vector_int_pop(&vec);
+    for (size_t i = 0; i < vec.length; i++) printf("%d ", vec.data[i]);
+    printf("[Popped: %d]\n", popped);
+    vector_int_delete(&vec);
 }
 
 void utils_test()
@@ -85,6 +110,7 @@ int main()
 {
     string_test();
     vector_test();
+    genvec_test();
     utils_test();
 
     return EXIT_SUCCESS;
