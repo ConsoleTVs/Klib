@@ -1,12 +1,12 @@
 #if defined(TYPE) && defined(NAME) && defined(BLOCK)
 
-#define TP2(a, b) a ## b
 #define TP3(a, b, c) a ## b ## c
 #define TP4(a, b, c, d) a ## b ## c ## d
 #define GENERATEVEC_T(N) TP3(vector_, N, _t)
 #define VEC_T GENERATEVEC_T(NAME)
 #define GENFUNNAME(N, suf) TP4(vector_, N, _, suf)
 #define FUNNAME(N) GENFUNNAME(NAME, N)
+
 #include <stdint.h>
 #include <stddef.h>
 #include <stdlib.h>
@@ -78,7 +78,11 @@ void FUNNAME(delete)(VEC_T *dest)
     free(dest->data);
 }
 
-#undef GENVEC_T
-#undef TP
+#undef TP3
+#undef TP4
+#undef GENERATEVEC_T
+#undef VEC_T
+#undef GENFUNNAME
+#undef FUNNAME
 
 #endif
