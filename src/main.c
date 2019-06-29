@@ -90,10 +90,10 @@ void genvec_test()
     vector_int_push(&vec, 20);
     vector_int_push(&vec, 30);
     for (size_t i = 0; i < vec.length; i++) printf("%d ", vec.data[i]);
-    printf("\n");
+    printf("(Contains 30: %s)\n", vector_int_contains(&vec, 30) ? "Yes" : "No");
     int popped = vector_int_pop(&vec);
     for (size_t i = 0; i < vec.length; i++) printf("%d ", vec.data[i]);
-    printf("[Popped: %d]\n", popped);
+    printf("(Contains 30: %s) [Popped: %d]\n", vector_int_contains(&vec, 30) ? "Yes" : "No", popped);
     vector_int_delete(&vec);
 }
 

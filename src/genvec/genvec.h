@@ -12,6 +12,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <inttypes.h>
+#include <stdbool.h>
 
 typedef struct {
     // It stores the elements text of the vector.
@@ -56,6 +57,7 @@ void FUNNAME(push)(VEC_T *const dest, TYPE element)
     // Push the extra data to the vector
     dest->data[dest->length - 1] = element;
 }
+
 // Pops an element from the vector and returns it.
 TYPE FUNNAME(pop)(VEC_T *const dest)
 {
@@ -65,6 +67,20 @@ TYPE FUNNAME(pop)(VEC_T *const dest)
     FUNNAME(reallocate)(dest, --dest->length);
     return pop;
 }
+
+// Pops an element from the vector and returns it.
+bool FUNNAME(contains)(VEC_T *const src, const TYPE value)
+{
+    for (size_t i = 0; i < src->length; i++) {
+        #ifdef COMPARISON
+        if (COMPARISON) return true;
+        #else
+        if (src->data[i] == value) return true;
+        #endif
+    }
+    return false;
+}
+
 // Prints the vector information in the stdout.
 void FUNNAME(info)(const VEC_T *const src)
 {
