@@ -7,13 +7,7 @@
 #include <stdlib.h>
 
 // Use generic vector
-#define TYPE int
-#define NAME int
-#define BLOCK 20
-#include "genvec/genvec.h"
-#undef TYPE
-#undef NAME
-#undef BLOCk
+vector_create_type(string_t, string_vector_t);
 
 static void string_test()
 {
@@ -53,48 +47,28 @@ static void vector_test()
 {
     printf("Testing vector...\n");
     // Create a vector.
-    vector_t vector;
-    vector_init(&vector);
+    string_vector_t vector = vector_create(20);
     vector_info(&vector);
-    vector_print(&vector);
     // Add an element to the vector.
     string_t string;
     string_init(&string, "Hello");
-    vector_push(&vector, &string);
+    vector_push(&vector, string);
     vector_info(&vector);
-    vector_print(&vector);
     // Pop an element from the vector.
-    string_t *string_pop = vector_pop(&vector);
+    string_t string_pop;
+    vector_pop(&vector, string_pop);
     vector_info(&vector);
-    vector_print(&vector);
+    printf("Popped element: "); string_print(&string_pop);
     // Add the popped element back to the vector.
     vector_push(&vector, string_pop);
     vector_info(&vector);
-    vector_print(&vector);
     // Add an additional element to the vector.
     string_t string2;
     string_init(&string2, "World");
-    vector_push(&vector, &string2);
+    vector_push(&vector, string2);
     vector_info(&vector);
-    vector_print(&vector);
     // Delete the vector.
     vector_delete(&vector);
-}
-
-void genvec_test()
-{
-    printf("Testing genvec...\n");
-    vector_int_t vec;
-    vector_int_init(&vec);
-    vector_int_push(&vec, 10);
-    vector_int_push(&vec, 20);
-    vector_int_push(&vec, 30);
-    for (size_t i = 0; i < vec.length; i++) printf("%d ", vec.data[i]);
-    printf("(Contains 30: %s)\n", vector_int_contains(&vec, 30) ? "Yes" : "No");
-    int popped = vector_int_pop(&vec);
-    for (size_t i = 0; i < vec.length; i++) printf("%d ", vec.data[i]);
-    printf("(Contains 30: %s) [Popped: %d]\n", vector_int_contains(&vec, 30) ? "Yes" : "No", popped);
-    vector_int_delete(&vec);
 }
 
 void utils_test()
@@ -110,7 +84,6 @@ int main()
 {
     string_test();
     vector_test();
-    genvec_test();
     utils_test();
 
     return EXIT_SUCCESS;

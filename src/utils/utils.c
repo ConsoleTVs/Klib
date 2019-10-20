@@ -17,8 +17,8 @@ void get_window_size(size_t *const rows, size_t *const cols)
     #else
         struct winsize w;
         ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
-        *rows = ws.ws_row;
-        *cols = ws.ws_col;
+        *rows = w.ws_row;
+        *cols = w.ws_col;
     #endif
 }
 
