@@ -1,33 +1,83 @@
-#ifndef KLIB_VECTOR_H
-#define KLIB_VECTOR_H
+#ifndef VECTOR_H
+#define VECTOR_H
 
-#define VECTOR_BLOCK_SIZE 20
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
-#include <stdint.h>
-#include <stddef.h>
+/// Creates the final vector type.
+#define vector_create_type(data_type, type_name) typedef struct { \
+    data_type *data; \
+    size_t length; \
+    size_t capacity; \
+    const size_t block; \
+} type_name;
 
-// This is the basic vector structure
-// The methods are also documented.
-typedef struct {
-    // It stores the elements text of the vector.
-    void **data;
-    // It stores the length of the vector.
-    size_t length;
-    // Stores the capacity of the vector (the allocated pointer bytes of space).
-    size_t capacity;
-} vector_t;
+/// Creates the final vector type.
+#define vector_create_final_type(data_type, type_name) typedef struct { \
+    data_type *data; \
+    size_t length; \
+} type_name;
 
-// Creates a new vector.
-void vector_init(vector_t *const dest);
-// Pushes an element into the vector.
-void vector_push(vector_t *const dest, void *const element);
-// Pops an element from the vector and returns it.
-void *vector_pop(vector_t *const dest);
-// Prints the vector information in the stdout.
-void vector_info(const vector_t *const src);
-// Print the vector to the screen.
-void vector_print(const vector_t *const src);
-// Deletes the vector's allocated data and the vector itself.
-void vector_delete(vector_t *const dest);
+/// Creates the final vector.
+#define vector_to_final(vector) { \
+    .data = (vector)->data, \
+    .length = (vector)->length \
+}
+
+/// Sets the final vector to a given variable.
+#define vector_to_final_on(vector, variable) { \
+    (variable)->data = (vector)->data; \
+    (variable)->length = (vector)->length; \
+}
+
+/// Reallocates a vector to fit a given capacity.
+#define vector_realloc(vector, capacity) { \
+    if ((vector)->data == NULL && ((vector)->capacity == 0 && capacity > 0)) { \
+        do (vector)->capacity += (vector)->block; \
+        while ((vector)->capacity < capacity); \
+        (vector)->data = malloc(sizeof(*(vector)->data) * (vector)->capacity); \
+    } else if ((vector)->capacity < capacity) { \
+        do (vector)->capacity += (vector)->block; \
+        while ((vector)->capacity < capacity); \
+        (vector)->data = realloc((vector)->data, sizeof(*(vector)->data) * (vector)->capacity); \
+    } else if ((vector)->capacity > capacity) { \
+        while ((vector)->capacity > capacity + (vector)->block) \
+            (vector)->capacity -= (vector)->block; \
+        (vector)->data = realloc((vector)->data, sizeof(*(vector)->data) * (vector)->capacity); \
+    } \
+}
+
+/// Creates a new vector.
+#define vector_create(block_size) { \
+    .data = NULL, \
+    .length = 0, \
+    .capacity = 0, \
+    .block = block_size \
+}
+
+/// Pushes an element into the vector.
+#define vector_push(vector, element) { \
+    size_t capacity = ++(vector)->length; \
+    vector_realloc(vector, capacity); \
+    memcpy((vector)->data + ((vector)->length - 1), &element, sizeof(element)); \
+}
+
+/// Pops an element from the vector and returns it.
+#define vector_pop(vector, element) { \
+    element = (vector)->data[(vector)->length - 1]; \
+    size_t capacity = --(vector)->length; \
+    vector_realloc(vector, capacity); \
+}
+
+/// Prints the vector information in the stdout.
+#define vector_info(vector) { \
+    printf("{ length: %zu, capacity: %zu, block: %zu }\n", (vector)->length, (vector)->capacity, (vector)->block); \
+}
+
+/// Deletes the vector's allocated data and the vector itself.
+#define vector_delete(vector) { \
+    free((vector)->data); \
+}
 
 #endif
